@@ -1,0 +1,32 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/governance-contracts",
+    "crates/governance-validator",
+    "crates/governance-effectlog",
+    "crates/governance-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+rust-version = "1.80"
+authors = ["SILENCE.OBJECTS"]
+repository = "https://github.com/SILENCE-OBJECTS/silence-governance-records"
+description = "Open-core governance ledger. Schema, FSM, EffectLog. No scoring. No raw streams."
+publish = false
+
+[workspace.dependencies]
+# Cargo.lock is SSoT. Pins are exact.
+serde = { version = "=1.0.203", features = ["derive"] }
+sha2 = "=0.10.8"
+hex = "=0.4.3"
+clap = { version = "=4.5.17", features = ["derive"] }
+anyhow = "=1.0.86"
+walkdir = "=2.5.0"
+chrono = { version = "=0.4.38", default-features = false, features = ["clock", "std"] }
+
+[profile.release]
+lto = true
+codegen-units = 1

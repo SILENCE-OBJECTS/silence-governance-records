@@ -1,0 +1,10 @@
+[package]
+name = "governance-contracts"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "DTO types for SILENCE governance records. No scoring."
+
+[dependencies]
+serde.workspace = true

@@ -1,0 +1,43 @@
+name: External Report Intake
+description: Submit external material for governance intake triage (synthetic/non-PII only)
+title: "[INTAKE] "
+labels: ["intake", "needs-classification"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Status: PUBLIC CANDIDATE intake form.
+        Do NOT paste raw telemetry, PII, or private-layer-scoped content here.
+        Violating submissions will be rejected at intake (RAW_STREAM_REFUSED /
+        RESTRICTED_CONTENT_REFUSED) and logged, not silently dropped.
+  - type: input
+    id: correlation_id
+    attributes:
+      label: Proposed correlation_id (if known)
+      placeholder: COR-2026-XXXX
+    validations:
+      required: false
+  - type: dropdown
+    id: source_tag
+    attributes:
+      label: Source classification
+      options:
+        - "[H] human-authored"
+        - "[T] tool-generated"
+        - "[E] evidence artifact"
+        - "[M] machine-inferred"
+    validations:
+      required: true
+  - type: textarea
+    id: thesis
+    attributes:
+      label: Thesis / claim
+      description: One paragraph. No raw data, no PII, no private-layer logic.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence references (links, hashes — no raw payloads)
+    validations:
+      required: false

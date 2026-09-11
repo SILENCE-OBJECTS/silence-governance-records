@@ -1,0 +1,30 @@
+# silence-governance-records — machine-readable orientation
+
+## Is
+- A deterministic governance ledger: records, correspondence, decisions, evidence.
+- A Rust CLI (governance-cli) validating schema, FSM lifecycle, and hash-chain integrity.
+- Open-core: contracts, validator, effectlog, cli crates are MIT.
+
+## Is-not
+- Not a scoring engine, not a predictive model, not a medical device.
+- Not a store of PII, raw telemetry, or private-layer business logic.
+- Not a substitute for the private workspace (out of this tree).
+
+## Canonical docs
+- docs/ARCHITECTURE.md — crate boundaries and data flow
+- docs/EXTERNAL_REPORT_INTAKE.md — how inbox records are classified
+- docs/PUBLICATION_POLICY.md — gate for records/ -> publications/published
+- docs/RECORD_LIFECYCLE.md — FSM states and allowed transitions
+
+## Record statuses
+DRAFT, OPEN, WAITING, DECIDED, CLOSED, ARCHIVED
+
+## Source classification tags
+[H] human-authored, [T] tool-generated, [E] evidence artifact, [M] machine-inferred
+
+## Trust boundary
+private layer MAY depend on open-core.
+open-core (this repo) MUST NEVER depend on the private layer. Enforced by CI rule WORLDHALT.
+
+## Contact / publication requests
+See docs/PUBLICATION_POLICY.md. All publication requires OWNER decision (DEC-*).

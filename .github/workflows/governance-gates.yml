@@ -1,0 +1,75 @@
+name: governance-gates
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: governance-gates-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  gates:
+    name: Governance Gates
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@1.98.1
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: lockfile required
+        run: test -f Cargo.lock
+
+      - name: cargo fmt --check
+        run: cargo fmt --all -- --check
+
+      - name: cargo clippy -D warnings
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: cargo test --workspace --locked
+        run: cargo test --workspace --locked
+
+      - name: Validate records/
+        run: cargo run -p governance-cli --locked -- validate records/
+
+      - name: Intake check records/inbox/
+        run: cargo run -p governance-cli --locked -- intake-check records/inbox/
+
+      - name: Publication check
+        run: cargo run -p governance-cli --locked -- publication-check publications/
+
+      - name: Verify EffectLog chain
+        run: cargo run -p governance-cli --locked -- verify-chain records/
+
+      - name: S11 vocabulary lock scan (public docs)
+        run: |
+          set -e
+          FORBIDDEN='diagnos|therapeutic|clinical|biological age|screening'
+          if grep -RniE "$FORBIDDEN" docs/ README.md llms.txt publications/published/ 2>/dev/null; then
+            echo "S11 VIOLATION: forbidden medical/treatment term found in public surface."
+            exit 1
+          fi
+          echo "S11 scan passed: no forbidden terms in public surface."
+
+      - name: WORLDHALT boundary check (no private-layer references)
+        run: |
+          set -e
+          if grep -RniE '03ee|silence-enterprise|behavioral-intelligence-ee' \
+            --include='*.rs' --include='*.toml' \
+            . 2>/dev/null | grep -v '.github/workflows/governance-gates.yml'; then
+            echo "WORLDHALT VIOLATION: private-layer reference found in open-core crate/manifest."
+            exit 1
+          fi
+          echo "WORLDHALT passed: no private-layer references in crates."

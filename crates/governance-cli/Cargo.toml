@@ -1,0 +1,20 @@
+[package]
+name = "governance-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+description = "SILENCE governance record CLI. Intake/publication file parsers are skeleton."
+
+[[bin]]
+name = "governance-cli"
+path = "src/main.rs"
+
+[dependencies]
+governance-contracts = { path = "../governance-contracts" }
+governance-validator = { path = "../governance-validator" }
+governance-effectlog = { path = "../governance-effectlog" }
+clap.workspace = true
+anyhow.workspace = true
+walkdir.workspace = true
+serde = { workspace = true, features = ["derive"] }
