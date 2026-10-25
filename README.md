@@ -43,5 +43,6 @@ Cargo.lock is SSoT. rustc 1.98.1.
 
 ## License
 
-MIT for `crates/` and this documentation. Records under `records/` are
-governance artifacts, not software, and are versioned but not licensed as code.
+Apache-2.0 for `crates/` and this documentation; see [LICENSE](LICENSE).
+Records under `records/` are governance artifacts, not software, and are
+versioned but not licensed as code.
